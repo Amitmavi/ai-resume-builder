@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { v4 as uuidv4 } from 'uuid';   
 import GlobalApi from './../../../service/GlobalApi';
 import { useUser } from '@clerk/clerk-react';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -20,6 +21,7 @@ export default function AddResume() {
   const [resumeTitle, setResumeTitle] = useState('');  
   const {user}=useUser();
   const [loading,setLoading]=useState(false);
+  const navigation=useNavigate();
 
   const onCreate=()=>{
     setLoading(true)
@@ -34,10 +36,11 @@ export default function AddResume() {
 
     }
     GlobalApi.CreateNewResume(data).then(Response=>{
-      console.log(Response);
+      console.log(Response.data.data.documentId);
       if(Response)
       {
         setLoading(false);
+        navigation('/dashboard/resume/'+Response.data.data.documentId+"/edit");
       }
     },(error)=>{
       setLoading(false);
