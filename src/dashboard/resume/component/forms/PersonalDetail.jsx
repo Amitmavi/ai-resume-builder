@@ -83,7 +83,7 @@ function PersonalDetail({enabledNext}) {
             </div>
 
             <div>
-              <label className='text-sm' >Phone</label>
+              <label className='text-sm' > Phone</label>
               <Input name="phone" defaultValue={resumeInfo?.phone} required onChange={handleInputChange}/>
             </div>
 

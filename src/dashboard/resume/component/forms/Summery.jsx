@@ -4,13 +4,18 @@ import { ResumeInfoContext } from '@/context/ResumeInfoConext';
 import React, { useContext, useEffect, useState } from 'react';
 import { Form, useParams } from 'react-router-dom';
 import GlobalApi from './../../../../../service/GlobalApi';
-import { LoaderCircle } from 'lucide-react';
+import { Brain, LoaderCircle } from 'lucide-react';
+// import { AIChatSession } from  './../../../../../service/AIModal';
+
+
+const prompt="Job Title : Full Stack React Developer, Depends on job title give me summery for my resume with in 4-5 lines."
 
 function Summery({ enabledNext }) {
   const { resumeInfo, setResumeInfo } = useContext(ResumeInfoContext);
   const [summery, setSummery] = useState('');
   const [loading, setLoading] = useState(false);
   const params = useParams();
+  
 
   useEffect(() => {
     if (summery) {
@@ -20,6 +25,17 @@ function Summery({ enabledNext }) {
       });
     }
   }, [summery, resumeInfo, setResumeInfo]);
+
+  const GenerateSummeryFromAI=async()=>{
+    setLoading(true)
+    const PROMPT=prompt.replace('{jobTitle}',resumeInfo?.jobTitle);
+    console.log(PROMPT);
+    const result=await AIChatSession.sendMessage(PROMPT);
+    console.log(JSON.parse(result.response.text())) 
+   
+    setAiGenerateSummeryList(JSON.parse(result.response.text()))
+    setLoading(false);
+} 
 
   const onSave = (e) => {
     e.preventDefault();
@@ -52,9 +68,8 @@ function Summery({ enabledNext }) {
         <Form className='mt-7' onSubmit={onSave}>
           <div className='flex justify-between items-end'>
             <label>Add Summery</label>
-            <Button variant='outline' size='sm' className='border-primary text-primary'>
-              Generate From AI
-            </Button>
+            <Button variant='outline'onClick={()=>GenerateSummeryFromAI}  type="button" size='sm' className='border-primary text-primary flex gap-2'>
+              <Brain className='h-4 w-4'/> Generate From AI</Button>
           </div>
           <Textarea
             className='mt-5'
@@ -69,6 +84,7 @@ function Summery({ enabledNext }) {
           </div>
         </Form>
       </div>
+      <div></div>
     </div>
   );
 }
