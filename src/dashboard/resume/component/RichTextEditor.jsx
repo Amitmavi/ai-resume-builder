@@ -8,8 +8,8 @@ import { BtnBold, BtnBulletList,  BtnItalic,  BtnNumberedList, BtnRedo, BtnStrik
 
 const PROMPT='Position Title : {PositinTitle}, Depends on job title give me summery for my resume with in 4-5 lines.'
 
-function RichTextEditor({onRichTextEditorChange}) {
-    const [value,setValue]=useState();
+function RichTextEditor({onRichTextEditorChange,index,defaultvalue}) {
+    const [value,setValue]=useState(defaultvalue);
     const {resumeInfo,setResumeInfo}=useContext(ResumeInfoContext)
 
     const GenerateSummeryFromAI=async()=>{

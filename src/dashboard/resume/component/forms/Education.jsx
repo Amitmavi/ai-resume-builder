@@ -25,35 +25,47 @@ function Education() {
         }
     ]);
 
+    // Populate educationalList with data from resumeInfo if available
+    useEffect(() => {
+        if (resumeInfo?.education?.length > 0) {
+            setEducationalList(resumeInfo.education);
+        }
+    }, []);
+
     const handleChange = (event, index) => {
-        const newEntries=educationalList.slice();
-        const {name,value}=event.target;
-        newEntries[index][name]=value;
+        const newEntries = [...educationalList];
+        const { name, value } = event.target;
+        newEntries[index][name] = value;
         setEducationalList(newEntries);
-    }
+    };
 
     const AddNewEducation = () => {
-        setEducationalList([...educationalList, {
-            universityName: '',
-            startDate: '',
-            endDate: '',
-            degree: '',
-            major: '',
-            description: '',
-        }]);
+        setEducationalList([
+            ...educationalList,
+            {
+                universityName: '',
+                startDate: '',
+                endDate: '',
+                degree: '',
+                major: '',
+                description: '',
+            }
+        ]);
     };
 
     const RemoveEducation = () => {
+        if (educationalList.length > 1) {
             setEducationalList(educationalList.slice(0, -1));
+        } else {
             toast('At least one education entry is required.');
         }
-  
+    };
 
     const onSave = async () => {
         setLoading(true);
         const data = {
             data: {
-                education: educationalList,
+                education: educationalList.map(({ id, ...rest }) => rest),
             },
         };
 
@@ -74,7 +86,7 @@ function Education() {
             ...resumeInfo,
             education: educationalList
         });
-    }, [educationalList])
+    }, [educationalList]);
 
     return (
         <div>
@@ -88,7 +100,7 @@ function Education() {
                                 <label>University Name</label>
                                 <Input
                                     name="universityName"
-                                    value={item.universityName}
+                                    value={item?.universityName}  // Use `value` instead of `defaultValue`
                                     onChange={(e) => handleChange(e, index)}
                                 />
                             </div>
@@ -97,7 +109,7 @@ function Education() {
                                 <label>Degree</label>
                                 <Input
                                     name="degree"
-                                    value={item.degree}
+                                    value={item?.degree}  // Use `value`
                                     onChange={(e) => handleChange(e, index)}
                                 />
                             </div>
@@ -106,7 +118,7 @@ function Education() {
                                 <label>Major</label>
                                 <Input
                                     name="major"
-                                    value={item.major}
+                                    value={item?.major}  // Use `value`
                                     onChange={(e) => handleChange(e, index)}
                                 />
                             </div>
@@ -116,7 +128,7 @@ function Education() {
                                 <Input
                                     type="date"
                                     name="startDate"
-                                    value={item.startDate}
+                                    value={item?.startDate}  // Use `value`
                                     onChange={(e) => handleChange(e, index)}
                                 />
                             </div>
@@ -126,7 +138,7 @@ function Education() {
                                 <Input
                                     type="date"
                                     name="endDate"
-                                    value={item.endDate}
+                                    value={item?.endDate}  // Use `value`
                                     onChange={(e) => handleChange(e, index)}
                                 />
                             </div>
@@ -135,7 +147,7 @@ function Education() {
                                 <label>Description</label>
                                 <Textarea
                                     name="description"
-                                    value={item.description}
+                                    value={item?.description}  // Use `value`
                                     onChange={(e) => handleChange(e, index)}
                                 />
                             </div>
@@ -144,8 +156,17 @@ function Education() {
                 </div>
                 <div className="flex justify-between">
                     <div className="flex gap-2">
-                        <Button variant="outline" onClick={AddNewEducation} className="text-primary">+ Add More Education </Button>
-                        <Button variant="outline" onClick={RemoveEducation} className="text-primary"> - Remove </Button>
+                        <Button variant="outline" onClick={AddNewEducation} className="text-primary">
+                            + Add More Education
+                        </Button>
+                        <Button 
+                            variant="outline" 
+                            onClick={RemoveEducation} 
+                            className="text-primary" 
+                            disabled={educationalList.length === 1} // Disable remove when only one entry exists
+                        >
+                            - Remove
+                        </Button>
                     </div>
                     <Button disabled={loading} onClick={onSave}>
                         {loading ? <LoaderCircle className="animate-spin" /> : 'Save'}

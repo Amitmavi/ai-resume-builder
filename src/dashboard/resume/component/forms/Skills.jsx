@@ -20,8 +20,15 @@ function Skills() {  // Rename component to uppercase
     const [loading, setLoading] = useState(false);
     const { resumeInfo, setResumeInfo } = useContext(ResumeInfoContext);
 
+    // Populate skillsList from resumeInfo if available
+    useEffect(() => {
+        if (resumeInfo?.skills?.length > 0) {
+            setSkillsList(resumeInfo.skills);
+        }
+    }, []);
+
     const handleChange = (index, name, value) => {
-        const newEntries =skillsList.slice();
+        const newEntries = [...skillsList];
         newEntries[index][name] = value;
         setSkillsList(newEntries);
     };
@@ -34,33 +41,38 @@ function Skills() {  // Rename component to uppercase
     };
 
     const RemoveSkills = () => {
-        setSkillsList(skillsList => skillsList.slice(0, -1));
+        if (skillsList.length > 1) {
+            setSkillsList(skillsList.slice(0, -1));
+        } else {
+            toast('At least one skill entry is required.');
+        }
     };
 
     const onSave = () => {
         setLoading(true);
         const data = {
             data: {
-                skills: skillsList
+                skills: skillsList.map(({ id, ...rest }) => rest),
             }
         }
-        GlobalApi.UpdateResumeDetail(resumeId, data).then
-            (Response=>{
+        GlobalApi.UpdateResumeDetail(resumeId, data).then(
+            (Response) => {
                 console.log(Response);
                 setLoading(false);
                 toast('Details updated!');
-            },(error)=>{
+            },
+            (error) => {
                 setLoading(false);
                 toast('Server Error, try again');
-            })
-        
+            }
+        );
     };
 
     useEffect(() => {
         setResumeInfo({
             ...resumeInfo,
             skills: skillsList
-        })
+        });
     }, [skillsList]);
 
     return (
@@ -76,8 +88,8 @@ function Skills() {  // Rename component to uppercase
                                 <label className='text-xs'>Name</label>
                                 <Input
                                     className="w-full"
-                                    onChange={(e) => handleChange(index, 'name', e.target.value)}
                                     value={item.name}  // Use value to control the input
+                                    onChange={(e) => handleChange(index, 'name', e.target.value)}
                                 />
                             </div>
                             <Rating
@@ -92,7 +104,14 @@ function Skills() {  // Rename component to uppercase
                 <div className="flex justify-between">
                     <div className="flex gap-2">
                         <Button variant="outline" onClick={AddNewSkills} className="text-primary">+ Add More Skills </Button>
-                        <Button variant="outline" onClick={RemoveSkills} className="text-primary"> - Remove </Button>
+                        <Button 
+                            variant="outline" 
+                            onClick={RemoveSkills} 
+                            className="text-primary" 
+                            disabled={skillsList.length === 1}  // Disable remove button if only one skill form is left
+                        >
+                            - Remove
+                        </Button>
                     </div>
                     <Button disabled={loading} onClick={onSave}>
                         {loading ? <LoaderCircle className="animate-spin" /> : 'Save'}
@@ -103,4 +122,4 @@ function Skills() {  // Rename component to uppercase
     );
 }
 
-export default Skills;  // Ensure correct export
+export default Skills;
