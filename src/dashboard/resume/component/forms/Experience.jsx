@@ -100,7 +100,8 @@ function Experience() {
                                     <Input
                                         name='title'
                                         onChange={(event) => handleChange(index, event)}
-                                        value={item.title} // Use `value` to bind state
+                                        defaultvalue={item?.title}
+                                        
                                     />
                                 </div>
 
@@ -109,7 +110,8 @@ function Experience() {
                                     <Input
                                         name='companyName'
                                         onChange={(event) => handleChange(index, event)}
-                                        value={item.companyName} // Use `value`
+                                        defaultvalue={item?.companyName} 
+                                        
                                     />
                                 </div>
 
@@ -118,7 +120,7 @@ function Experience() {
                                     <Input
                                         name='city'
                                         onChange={(event) => handleChange(index, event)}
-                                        value={item.city} // Use `value`
+                                        defaultvalue={item?.city} // Use `value`
                                     />
                                 </div>
 
@@ -127,7 +129,7 @@ function Experience() {
                                     <Input
                                         name='state'
                                         onChange={(event) => handleChange(index, event)}
-                                        value={item.state} // Use `value`
+                                        defaultvalue={item?.state} // Use `value`
                                     />
                                 </div>
 
@@ -137,7 +139,7 @@ function Experience() {
                                         type='date'
                                         name='startDate'
                                         onChange={(event) => handleChange(index, event)}
-                                        value={item.startDate} // Use `value`
+                                        vadefaultvalueue={item?.startDate} // Use `value`
                                     />
                                 </div>
                                 <div>
@@ -146,7 +148,7 @@ function Experience() {
                                         type='date'
                                         name='endDate'
                                         onChange={(event) => handleChange(index, event)}
-                                        value={item.endDate} // Use `value`
+                                        defaultvalue={item?.endDate} // Use `value`
                                     />
                                 </div>
 

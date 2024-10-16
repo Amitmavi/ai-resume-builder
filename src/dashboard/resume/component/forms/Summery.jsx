@@ -5,6 +5,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Form, useParams } from 'react-router-dom';
 import GlobalApi from './../../../../../service/GlobalApi';
 import { Brain, LoaderCircle } from 'lucide-react';
+import { toast } from 'sonner';
 // import { AIChatSession } from  './../../../../../service/AIModal';
 
 
@@ -52,6 +53,7 @@ function Summery({ enabledNext }) {
         console.log(response);
         enabledNext(true);
         setLoading(false);
+        toast("Details updated")
       })
       .catch((error) => {
         console.error(error);
@@ -75,6 +77,7 @@ function Summery({ enabledNext }) {
             className='mt-5'
             required
             value={summery || ''} // Ensuring controlled component
+            
             onChange={(e) => setSummery(e.target.value)}
           />
           <div className='mt-3 flex justify-end'>
