@@ -20,10 +20,13 @@ import GlobalApi from './../../../../service/GlobalApi';
     const GetResumeInfo=()=>{
       GlobalApi.GetResumeById(resumeId).then(Response=>{
         console.log(Response.data.data);
+        // setResumeInfo(Response.data.data);
         
-      })
-      
+      })     
     }
+
+
+
   return (
     <ResumeInfoContext.Provider value={{resumeInfo,setResumeInfo}}>
     <div className='grid grid-cols-1 md:grid-cols-2 p-10 gap-10'>
