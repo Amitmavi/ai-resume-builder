@@ -14,17 +14,14 @@ function ResumePage() {
 
   useEffect(() => {
     GetResumeInfo();
-  }, [resumeId]); // Dependency array includes `resumeId`
+  }, []); // Dependency array includes `resumeId`
 
-  const GetResumeInfo = async () => {
-    try {
-      const response = await GlobalApi.GetResumeById(resumeId);
-      console.log(response);
-      setResumeInfo(response.data.data);
-    } catch (error) {
-      console.error('Error fetching resume info:', error);
-    }
-  };
+  const GetResumeInfo=()=>{
+    GlobalApi.GetResumeById(resumeId).then(resp=>{
+        console.log(resp.data.data);
+        setResumeInfo(resp.data.data);
+    })
+};
 
   const HandleDownload = () => {
     window.print();
