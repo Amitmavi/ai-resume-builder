@@ -10,19 +10,16 @@ import { Link } from 'react-router-dom';
 
               <div className='flex 
                   items-center justify-center h-[180px] '>
-                {/* <Notebook/> */}
                 <img src="/cv.png" width={80} height={80} />
               </div>
-        {/* <Notebook/> */}
-
       </div>
       <h2 className='text-center my-1'  style={{
         background:'#ff6666'
       }}>{resume.title}</h2>
-      {/* <MoreVertical className='h-4 w-4 cursor-pointer'/ > */}
+      
 
-
-    </Link>
+      </Link>
+    
   )
 } 
 export default ResumeCardItem;
